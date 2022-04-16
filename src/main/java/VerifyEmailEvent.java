@@ -69,7 +69,7 @@ public class VerifyEmailEvent implements RequestHandler<SNSEvent, Object> {
 
             // Add a new item to Forum
             TableWriteItems tableWriteItems = new TableWriteItems(tableName) // Forum
-                    .withItemsToPut(new Item().withPrimaryKey("Email", m.getUsername())
+                    .withItemsToPut(new Item().withPrimaryKey("email", m.getUsername())
                             .withString("Status", "Sent"));
             BatchWriteItemOutcome outcome = dynamoDB.batchWriteItem(tableWriteItems);
 
