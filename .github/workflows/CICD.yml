@@ -11,7 +11,7 @@ env:
   CODEDEPLOY_APPLICATION_NAME: mywebapp
   CODEDEPLOY_APPLICATION_DEPLOYMENT_GROUP_NAME: mywebapp
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel test
 jobs:
   ci_cd:
     runs-on: ubuntu-latest
