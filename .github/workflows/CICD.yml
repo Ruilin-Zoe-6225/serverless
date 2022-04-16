@@ -1,9 +1,9 @@
 name: Build & Deploy
 
 on:
-  push:
+  pull_request:
     branches: [main]
-#     types: [closed]
+    types: [closed]
 
 env:
   ARTIFACT_NAME: serverless-1.0-SNAPSHOT.jar
