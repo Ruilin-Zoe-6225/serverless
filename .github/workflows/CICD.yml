@@ -1,0 +1,41 @@
+name: Build & Deploy
+
+on:
+  pull_request:
+    branches: [main]
+    types: [closed]
+
+env:
+  ARTIFACT_NAME: serverless-1.0-SNAPSHOT.jar
+  AWS_REGION: us-west-2
+  CODEDEPLOY_APPLICATION_NAME: mywebapp
+  CODEDEPLOY_APPLICATION_DEPLOYMENT_GROUP_NAME: mywebapp
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  ci_cd:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: build with maven
+        run: mvn -B package --file pom.xml
+
+      - name: package
+        run: mvn package
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: AKIAYLSEFMVHMNT2QMFH
+          aws-secret-access-key: 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
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Copy File to S3
+        run: |
+          aws s3 cp target/serverless-1.0-SNAPSHOT.jar s3://${{ secrets.S3_CODEDEPLOY_BUCKET }}
+
+      - name: update lambda function
+        run: |
+          aws lambda update-function-code --function-name vemailFunction --s3-bucket ${{ secrets.S3_CODEDEPLOY_BUCKET }} --s3-key serverless-1.0-SNAPSHOT.jar
